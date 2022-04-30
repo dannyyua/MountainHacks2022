@@ -12,7 +12,7 @@ import websockets
 
 async def hello():
     async with websockets.connect("ws://142.58.168.251:8765/") as websocket:
-        await websocket.send("Hello world!")
+        await websocket.send("Player_name,")
         await websocket.recv()
 
 
@@ -28,7 +28,13 @@ class MountainApp(MDApp):
         print("hi")
 
     def joinScreen(self, player):
-        self.screen.clear()
+        self.clear_widgets()
+
+        self.toolbar = MDToolbar(title = "Join")
+        self.toolbar.pos_hint = {"top": 1}
+        self.toolbar.right_action_items = [
+            ["account-group", lambda x : self.activateFan()]]
+        self.screen.add_widget(self.toolbar)
 
         self.inputName = MDTextField(
             text = "Enter your nickname: ",
