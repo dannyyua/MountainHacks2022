@@ -22,7 +22,7 @@ from kivy.properties import StringProperty
 screen_helper = """
 ScreenManager:
     HomeScreen:
-    JoinScreen:
+    AddScoreScreen:
     LoadScreen:
     EndingScreen:
     PlayScreen:
@@ -36,22 +36,22 @@ ScreenManager:
         pos_hint: {'center_x' : 0.5, 'center_y': 0.55}
         size_hint: (0.8,0.8)
 
-    # Multiplayer button
+    #Highscore button
     MDFillRoundFlatButton:
-        text: 'MULTIPLAYER'
+        text: 'HIGHSCORE'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
         on_press: root.manager.current = 'join'
 
     # Play button
     MDFillRoundFlatButton:
-        text: 'SINGLEPLAYER'
+        text: 'PLAY'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.25}
         on_press: root.manager.current = 'play'
 
-<JoinScreen>:
-    name: 'join'
+<AddScoreScreen>:
+    name: 'addscore'
     MDToolbar:
-        title: 'Join'
+        title: 'Add Local Score'
         pos_hint: {'top': 1}
         right_action_items: [['account-group']]
 
@@ -91,13 +91,13 @@ ScreenManager:
         font_size: 22
 
     MDFillRoundFlatButton:
-        text: 'Back'
+        text: 'CANCEL'
         pos_hint: {'center_x' : 0.2,'center_y' : 0.15}
-        on_press: root.manager.current = 'home'
+        on_press: app.resetGame()
 
     # Start button
     MDRectangleFlatButton:
-        text: 'START'
+        text: 'SUBMIT'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
         on_press: app.Connect()
         
@@ -111,6 +111,10 @@ ScreenManager:
         text: 'RETURN'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
         on_press: app.resetGame()
+    MDRectangleFlatButton:
+        text: 'SUBMIT SCORE'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
+        on_press: app.set_screen('addscore')
     MDLabel:
         markup: True
         text: '[u][b]'+"CONGRATULATIONS"+'[/b][/u]'
@@ -244,7 +248,7 @@ ScreenManager:
 class HomeScreen(Screen):
     pass
 
-class JoinScreen(Screen):
+class AddScoreScreen(Screen):
     pass
 
 class LoadScreen(Screen):
@@ -278,7 +282,7 @@ class MountainApp(MDApp):
     # Create the screen manager
     sm = ScreenManager()
     sm.add_widget(HomeScreen(name='home'))
-    sm.add_widget(JoinScreen(name='join'))
+    sm.add_widget(AddScoreScreen(name='addscore'))
     sm.add_widget(LoadScreen(name='load'))
     sm.add_widget(EndingScreen(name='ending'))
     sm.add_widget(PlayScreen(name='play'))
