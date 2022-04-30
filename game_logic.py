@@ -1,7 +1,5 @@
 import random
 import game_objects
-from ssl import ALERT_DESCRIPTION_UNSUPPORTED_EXTENSION
-from unicodedata import name
 import csv
 
 
