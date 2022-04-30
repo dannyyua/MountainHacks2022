@@ -25,6 +25,7 @@ ScreenManager:
     HomeScreen:
     JoinScreen:
     LoadScreen:
+    PlayScreen:
 
 <HomeScreen>:
     name: 'home'
@@ -88,6 +89,10 @@ ScreenManager:
         pos_hint: {'center_x':0.5,'center_y':0.1}
         on_press: root.manager.current = 'menu'
         
+<PLayScreen>:
+    name: 'play'
+    
+
 """
 
 
@@ -100,15 +105,15 @@ class JoinScreen(Screen):
 class LoadScreen(Screen):
     pass
 
-# class PlayScreen(Screen):
-#     pass
+class PlayScreen(Screen):
+    pass
 
 # Create the screen manager
 sm = ScreenManager()
 sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(JoinScreen(name='join'))
 sm.add_widget(LoadScreen(name='load'))
-
+sm.add_widget(LoadScreen(name='play'))
 
 class MountainApp(MDApp):
 
