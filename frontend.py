@@ -11,13 +11,9 @@ from kivymd.uix.toolbar import MDToolbar
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from enum import Enum
-import asyncio
-import websockets
+from websocket import create_connection
+import game_logic
 
-async def hello():
-    async with websockets.connect("ws://142.58.168.251:8765/") as websocket:
-        await websocket.send("Player_name,")
-        await websocket.recv()
 
 
 screen_helper = """
@@ -46,8 +42,10 @@ ScreenManager:
     MDToolbar:
         title: 'Join'
         pos_hint: {'top': 1}
+        right_action_items: [['account-group']]
 
     MDTextField:
+        name: 'nickname'
         hint_text: 'Enter Your Nickname'
         halign: 'center'
         size_hint_x: 0.4
@@ -55,6 +53,7 @@ ScreenManager:
         font_size: 22
     
     MDTextField:
+        name: 'IP'
         hint_text: 'Enter IP'
         halign: 'center'
         size_hint_x: 0.4
@@ -62,6 +61,7 @@ ScreenManager:
         font_size: 22
 
     MDTextField:
+        name: 'port'
         hint_text: 'Enter Port'
         halign: 'center'
         size_hint_x: 0.4
@@ -77,7 +77,8 @@ ScreenManager:
     MDRectangleFlatButton:
         text: 'START'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
-        on_press: root.manager.current = 'join'
+        on_press: root.manager.current = 'load'
+        on_press: asyncio.run(root.Connect())
 
 <LoadScreen>:
     name: 'load'
@@ -100,13 +101,24 @@ class HomeScreen(Screen):
     pass
 
 class JoinScreen(Screen):
-    pass
+    async def Connect(self):
+        playerName = self.screen.get_screen('join').ids.nickname.text
+        playerIP =  self.screen.get_screen('join').ids.IP.text
+        playerPort = self.screen.get_screen('join').ids.port.text
+        ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+        print("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+        ws.send(playerName)
+
+
 
 class LoadScreen(Screen):
     pass
 
+
 class PlayScreen(Screen):
     pass
+
+
 
 # Create the screen manager
 sm = ScreenManager()
@@ -117,6 +129,7 @@ sm.add_widget(LoadScreen(name='play'))
 
 class MountainApp(MDApp):
 
+    plr = game_logic.Player("Mountain Mike") 
 
     def build(self):
         screen = Builder.load_string(screen_helper)
