@@ -24,6 +24,7 @@ ScreenManager:
     HomeScreen:
     JoinScreen:
     LoadScreen:
+    EndingScreen:
     PlayScreen:
     MultiScreen:
 
@@ -102,14 +103,36 @@ ScreenManager:
         
 
 <LoadScreen>:
-    name: 'load'
-    MDLabel:
-        text: 'Upload'
-        halign: 'center'
+    #TODO
+
+<EndingScreen>:
+    name: 'ending'
     MDRectangleFlatButton:
-        text: 'Back'
-        pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: root.manager.current = 'menu'
+        text: 'RETURN'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
+        on_press: root.manager.current = 'home'
+    MDLabel:
+        markup: True
+        text: '[u][b]'+"CONGRATULATIONS"+'[/b][/u]'
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.65}
+        font_size: 60
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        text: "Your Final Score is..."
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
+        font_size: 30
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        id: finalScore
+        markup: True
+        text: ''
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.4}
+        font_size: 30
+        color: (0, 0.29, 1, 1)
+
         
 <PLayScreen>:
     name: 'play'
@@ -197,7 +220,8 @@ ScreenManager:
     
 <MultiScreen>:
     name: 'multi'
-    
+
+
 
 """
 
@@ -210,6 +234,10 @@ class JoinScreen(Screen):
 
 class LoadScreen(Screen):
     pass
+
+class EndingScreen(Screen):
+    pass
+
 
 class PlayScreen(Screen):
     rounds = 1
@@ -230,7 +258,6 @@ class MultiScreen(Screen):
 
 
 
-
 class MountainApp(MDApp):
     
     # Create the screen manager
@@ -238,8 +265,10 @@ class MountainApp(MDApp):
     sm.add_widget(HomeScreen(name='home'))
     sm.add_widget(JoinScreen(name='join'))
     sm.add_widget(LoadScreen(name='load'))
+    sm.add_widget(EndingScreen(name='ending'))
     sm.add_widget(PlayScreen(name='play'))
     sm.add_widget(MultiScreen(name='multi'))
+    
 
     plr = game_objects.Player("Mountain Mike") 
 
@@ -249,11 +278,8 @@ class MountainApp(MDApp):
         screen.add_widget(self.navigation_bar)
         return screen
 
-    
     def set_screen(self, screen_name):
         self.navigation_bar.current = screen_name  
-
-
 
     def Connect(self):
         playerName = self.navigation_bar.get_screen('join').ids.nickname.text
@@ -267,25 +293,39 @@ class MountainApp(MDApp):
             self.navigation_bar.get_screen('join').ids.IPerror.text = "Please Enter a valid IP"
 
     def processGuess(self):
+        
         playScreen = self.navigation_bar.get_screen('play')
-        playScreen.rounds += 1
-        guessHeight = int(playScreen.ids.altitude.text)
-        guessProm = int(playScreen.ids.prominence.text)
-        guessIso = int(playScreen.ids.isolation.text)
-        actualHeight = int(playScreen.mountain.altitude)
-        actualProm = int(playScreen.mountain.prominence)
-        actualIso = int(playScreen.mountain.isolation)
-        playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
-        playScreen.maxScore += 30
-
-        if (playScreen.rounds <= playScreen.maxRounds):
+        if (playScreen.rounds < playScreen.maxRounds):
+            guessHeight = int(playScreen.ids.altitude.text)
+            guessProm = int(playScreen.ids.prominence.text)
+            guessIso = int(playScreen.ids.isolation.text)
+            actualHeight = int(playScreen.mountain.altitude)
+            actualProm = int(playScreen.mountain.prominence)
+            actualIso = int(playScreen.mountain.isolation)
+            # Update values
+            playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
+            playScreen.rounds += 1
+            playScreen.maxScore += 30
             playScreen.mountain = game_logic.RandomMountain()
+            # Update Screen tags
             playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
-
             playScreen.mountainName = str(playScreen.mountain.name)
             playScreen.currentRound = "Round " + str(playScreen.rounds) + "/" + str(playScreen.maxRounds)
             playScreen.currentScore = str(playScreen.score) + "/" + str(playScreen.maxScore)
-    
+        else:
+            guessHeight = int(playScreen.ids.altitude.text)
+            guessProm = int(playScreen.ids.prominence.text)
+            guessIso = int(playScreen.ids.isolation.text)
+            actualHeight = int(playScreen.mountain.altitude)
+            actualProm = int(playScreen.mountain.prominence)
+            actualIso = int(playScreen.mountain.isolation)
+            playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
+            playScreen.rounds += 1
+            playScreen.maxScore += 30
+            playScreen.mountain = game_logic.RandomMountain()
+            self.set_screen('ending')
+            self.navigation_bar.get_screen('ending').ids.finalScore.text = "[b]"+str(playScreen.score) + "/" + str(playScreen.maxScore)+"[/b]"
+            
     def test(self):
         print("hi")
     
