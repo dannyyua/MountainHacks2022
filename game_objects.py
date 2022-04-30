@@ -29,3 +29,8 @@ class Mountain:
         self.isolation = isolation
     def __str__(self):
         return 'Mountain(rank='+ str(self.rank) + ", name=" + str(self.name) + ", altitude=" + str(self.altitude) + ", prominence=" + str(self.prominence) + ", isolation=" + str(self.isolation) + ")"
+
+class Score:
+    def __init__(self, name, score):
+        self.name = name
+        self.points = score

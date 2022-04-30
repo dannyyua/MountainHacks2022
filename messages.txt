@@ -34,3 +34,8 @@ client send
 
 {"command":"player_guess","playerID":0,"altitude":500,"prominence":200,"isolation":20}
 {"command":"add_player","name":"zaidy","points":500,"ready":false}
+
+{"command":"player_score", "name":player.name, "score":player.score}
+
+{"command":"get_top_scores","scores":[{"name":"zaid","score":100},{"name":"zaid","score":100},{"name":"zaid","score":100}]}
+

@@ -9,11 +9,13 @@ import score
 
 # connect to this socket with python -m websockets ws://207.23.220.36:8765/
 
-ADDRESS = '192.168.56.1'
+ADDRESS = '142.58.168.251'
 PORT = 8765
 
-clients = set()
 
+playerScores = [Score]
+
+clients = set()
 roundMountain = [game_objects.Mountain(0,"default",0,0,0)]
 players = [game_objects.Player] * 0
 
@@ -23,7 +25,7 @@ async def call(client):
             await connectClient(client)
 
         try:
-            await parseCommand(json.loads(message))
+            await parseCommand(json.loads(message), client)
         except json.decoder.JSONDecodeError:
             print("No command for: ", message)
 
@@ -43,15 +45,30 @@ async def sendAll(msg):
     for client in clients:
         await client.send(msg)
 
-async def parseCommand(msg):
+async def parseCommand(msg, client):
     command = msg['command']
 
-    if (command == 'add_player'):
-        await addPlayer(msg)
+    if command == 'get_top_scores':
+        await sendScore(client)
 
-    if (command == "player_guess"):
-        await addGuess(msg)
-        newRound()
+    if command == 'send_score':
+        addScore(client, msg)
+
+    # if (command == 'add_player'):
+    #     await addPlayer(msg)
+
+    # if (command == "player_guess"):
+    #     await addGuess(msg)
+    #     newRound()
+
+async def addScore(client, msg):
+    playerScores.append(Score(msg['name'], msg['score']))
+
+async def sendScore(client): 
+    scoreJson = {"scores":[{}]}
+    for score in playerScores:
+        scoreJson["scores"].append({"name":score.name, "scores":score.score})
+    await client.send(scoreJson)
 
 def allPlayersReady():
     for player in players:
