@@ -134,7 +134,7 @@ ScreenManager:
         color: (0, 0.29, 1, 1)
 
         
-<PLayScreen>:
+<PlayScreen>:
     name: 'play'
 
     MDToolbar:
@@ -189,6 +189,7 @@ ScreenManager:
         pos_hint: {'center_x' : 0.2, 'center_y': 0.14}
         font_size: 22
         multiline: False
+        on_text_validate: root.ids.prominence.focus = True
 
     MDTextField:
         id: prominence
@@ -201,6 +202,7 @@ ScreenManager:
         pos_hint: {'center_x' : 0.5, 'center_y': 0.14}
         font_size: 22
         multiline: False
+        on_text_validate: root.ids.isolation.focus = True
 
     MDTextField:
         id: isolation
@@ -213,7 +215,7 @@ ScreenManager:
         pos_hint: {'center_x' : 0.8, 'center_y': 0.14}
         font_size: 22
         multiline: False
-        # Submit button
+        on_text_validate: app.processGuess()
 
     MDRectangleFlatButton:
         text: 'SUBMIT'
@@ -260,7 +262,7 @@ class PlayScreen(Screen):
 
     mountain = game_logic.RandomMountain()
     imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
-
+    
 
     mountainName = StringProperty(str(mountain.name))
     currentRound = StringProperty("Round " + str(rounds) + "/" + str(maxRounds))
