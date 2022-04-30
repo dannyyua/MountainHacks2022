@@ -1,7 +1,6 @@
 from typing import final
 
-# get scores array
-
+# returns updated array of Players
 def gameScores(playerArr, guessArr, ansMountain):
     for guess in guessArr:
         playerID = guess.playerID
@@ -43,9 +42,6 @@ def score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
     if finalScore > 10 or finalScore < 0:
         finalScore = 0
     
-    
 
-    print(finalScore)
-
-score(10,20,79,10,20,30)
+    return(finalScore)
 
