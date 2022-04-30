@@ -45,15 +45,15 @@ ScreenManager:
         right_action_items: [['account-group']]
 
     MDTextField:
-        name: 'nickname'
+        id: nickname
         hint_text: 'Enter Your Nickname'
         halign: 'center'
         size_hint_x: 0.4
         pos_hint: {'center_x' : 0.5, 'center_y': 0.7}
         font_size: 22
-    
+
     MDTextField:
-        name: 'IP'
+        id: IP
         hint_text: 'Enter IP'
         halign: 'center'
         size_hint_x: 0.4
@@ -61,7 +61,7 @@ ScreenManager:
         font_size: 22
 
     MDTextField:
-        name: 'port'
+        id: port
         hint_text: 'Enter Port'
         halign: 'center'
         size_hint_x: 0.4
@@ -78,7 +78,7 @@ ScreenManager:
         text: 'START'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
         on_press: root.manager.current = 'load'
-        on_press: asyncio.run(root.Connect())
+        on_press: app.Connect()
 
 <LoadScreen>:
     name: 'load'
@@ -101,14 +101,7 @@ class HomeScreen(Screen):
     pass
 
 class JoinScreen(Screen):
-    async def Connect(self):
-        playerName = self.screen.get_screen('join').ids.nickname.text
-        playerIP =  self.screen.get_screen('join').ids.IP.text
-        playerPort = self.screen.get_screen('join').ids.port.text
-        ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
-        print("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
-        ws.send(playerName)
-
+    pass
 
 
 class LoadScreen(Screen):
@@ -132,8 +125,20 @@ class MountainApp(MDApp):
     plr = game_logic.Player("Mountain Mike") 
 
     def build(self):
-        screen = Builder.load_string(screen_helper)
+        screen = Screen()
+        self.navigation_bar = Builder.load_string(screen_helper)
+        screen.add_widget(self.navigation_bar)
         return screen
+
+    def Connect(self):
+        playerName = self.navigation_bar.get_screen('join').ids.nickname.text
+        playerIP =  self.navigation_bar.get_screen('join').ids.IP.text
+        playerPort = self.navigation_bar.get_screen('join').ids.port.text
+        ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+        print("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+        ws.send(playerName)
+
+    
 
 if __name__ == '__main__':
     MountainApp().run()
