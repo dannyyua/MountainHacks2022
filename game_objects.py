@@ -1,5 +1,5 @@
 class Player:
-
+    currGuess = 99
     def __init__(self, name):
         self.name = name
         self.points = 0
@@ -29,5 +29,3 @@ class Mountain:
         self.isolation = isolation
     def __str__(self):
         return 'Mountain(rank='+ str(self.rank) + ", name=" + str(self.name) + ", altitude=" + str(self.altitude) + ", prominence=" + str(self.prominence) + ", isolation=" + str(self.isolation) + ")"
-
-        
