@@ -1,5 +1,20 @@
+import random
 
+def Randomline():
 
-# mFile = open("database.csv")
+    filesize = 51
+    offset = random.randrange(filesize)
 
-# for line in mFile:
+    f = open("database.csv")
+    f.seek(offset)
+    f.readline()
+    random_line = f.readline()
+
+    if len(random_line) == 0:
+        f.seek(0)
+        random_line = f.readline()
+
+    return random_line
+
+def RandomMountain():
+    
