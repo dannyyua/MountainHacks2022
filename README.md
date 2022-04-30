@@ -3,10 +3,10 @@
 </p>
 
 ---
-Built using Python, kivy, kivyMD and WebSocket
+Built using Python, kivy, kivyMD and WebSocket API
 Mystery Mountain is a guessing game for the mountainous adept who wish to hone their mountain skills. 
 
-Gameplay consists of being 5 rounds. In each round you are given a Mountain Peak and its corresponding image. You must then guess three very important pieces of information:
+Gameplay consists of being 5 rounds. In each round you are given a Mountain Peak and its corresponding image. You must then guess three <strong>very important</strong> pieces of information:
 
 - **A**ltitude of a given Mountain
 - **P**rominence of a Mountain
@@ -23,7 +23,7 @@ We used OOP to create the logic of the project and designed special algorithms f
 
 ### Running Mystery Mountain
 
-To install Mystery Mountain, please follow below.
+To install Mystery Mountain, please follow below:
 
 
 Installing and running program
@@ -31,4 +31,4 @@ Installing and running program
 pip install -r requirements.txt
 ```
 
-simple run frontend.py and continue!
+simply run frontend.py and continue!
