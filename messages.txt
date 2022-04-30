@@ -32,14 +32,14 @@ client send
   "isolation":20,
 }
 
-PASTE
+
+python server.py
+
 python -m websockets ws://YOUR_IP:CHOSEN_PORT/
 
-PASTE
 {"command":"send_score", "name":"june", "score":90}
 {"command":"send_score", "name":"justin", "score":20}
 {"command":"send_score", "name":"zaid", "score":100}
 {"command":"send_score", "name":"danny", "score":90}
 {"command":"send_score", "name":"fazal", "score":20}
 {"command":"get_top_scores"}
-
