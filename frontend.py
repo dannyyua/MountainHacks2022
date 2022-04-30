@@ -140,7 +140,7 @@ ScreenManager:
     MDToolbar:
         title: root.currentRound
         pos_hint: {'top': 1}
-        right_action_items: [['exit-to-app', lambda x : app.set_screen('home')]]
+        right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
         left_action_items: [['android-auto']]
 
     Image:
