@@ -31,11 +31,17 @@ ScreenManager:
         pos_hint: {'center_x' : 0.5, 'center_y': 0.55}
         size_hint: (0.8,0.8)
 
+    # Multiplayer button
+    MDFillRoundFlatButton:
+        text: 'MULTIPLAYER'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
+        on_press: root.manager.current = 'join'
+
     # Play button
     MDFillRoundFlatButton:
-        text: 'PLAY'
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
-        on_press: root.manager.current = 'join'
+        text: 'SINGLEPLAYER'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.25}
+        on_press: root.manager.current = 'play'
 
 <JoinScreen>:
     name: 'join'
