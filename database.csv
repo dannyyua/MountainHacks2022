@@ -1,21 +1,21 @@
-Rank,Mountain peak,Region,Mountain range,Elevation,Prominence,Isolation,Location
-1,Denali[7][8][a],Alaska,Alaska Range,"6190.5 m20,310 ft","6141 m20,146 ft","7,450.24",63°04′08″N 151°00′23″W﻿ / ﻿63.0690°N 151.0063°W
-2,Gunnbjørn Fjeld[251][252][dg][dh],Greenland,Island of Greenland,"3694 m12,119 ft","3694 m12,119 ft","3,254.13",68°55′06″N 29°53′57″W﻿ / ﻿68.9184°N 29.8991°W
-3,Pico de Orizaba[11][12][c](Citlaltépetl),Puebla Veracruz,Cordillera Neovolcanica,"5636 m18,491 ft","4922 m16,148 ft","2,690.14",19°01′50″N 97°16′11″W﻿ / ﻿19.0305°N 97.2698°W
-4,Mount Whitney[58][59][60][t][u],California,Sierra Nevada,"4421 m14,505 ft","3072 m10,080 ft","2,649.47",36°34′43″N 118°17′31″W﻿ / ﻿36.5786°N 118.2920°W
-5,Mount Mitchell[313][314][eu][ev][ew],North Carolina,Blue Ridge Mountains,"2037 m6,684 ft","1857 m6,092 ft","1,913.49",35°45′54″N 82°15′54″W﻿ / ﻿35.7649°N 82.2651°W
-6,Mount Washington[315][316][317][ex][ey][ez],New Hampshire,White Mountains,"1917 m6,288 ft","1877 m6,158 ft","1,318.95",44°16′14″N 71°18′12″W﻿ / ﻿44.2705°N 71.3032°W
-7,Mount Rainier[75][76][aa][ab],Washington,Cascade Range,"4394 m14,417 ft","4026 m13,210 ft","1,176.72",46°51′10″N 121°45′37″W﻿ / ﻿46.8529°N 121.7604°W
-8,Mount Elbert[66][67][68][v],Colorado,Sawatch Range,"4401.2 m14,440 ft","2772 m9,093 ft","1,079.15",39°07′04″N 106°26′43″W﻿ / ﻿39.1178°N 106.4454°W
-9,Pico Duarte[257][dl],Dominican Republic,Island of Hispaniola,"3098 m10,164 ft","3098 m10,164 ft",941 km584 mi,19°01′23″N 70°59′52″W﻿ / ﻿19.0231°N 70.9977°W
-10,Chirripó Grande[250][de][df](Cerro Chirripó),Costa Rica,Cordillera de Talamanca,"3819 m12,530 ft","3755 m12,320 ft",878 km546 mi,9°29′03″N 83°29′20″W﻿ / ﻿9.4843°N 83.4889°W
-11,Shishaldin Volcano[260][261][dn][do],Alaska,Unimak Island,"2869 m9,414 ft","2869 m9,414 ft",877 km545 mi,54°45′19″N 163°58′15″W﻿ / ﻿54.7554°N 163.9709°W
-12,Barbeau Peak[274][275][eb][ec],Nunavut,Ellesmere Island,"2616 m8,583 ft","2616 m8,583 ft",796 km495 mi,81°54′53″N 75°00′33″W﻿ / ﻿81.9148°N 75.0093°W
-13,Mount Caubvick[318][319][fa](Mont d'Iberville),Newfoundland and Labrador,Torngat Mountains,"1652 m5,420 ft","1367 m4,485 ft",791 km492 mi,58°53′16″N 63°42′35″W﻿ / ﻿58.8878°N 63.7098°W
-14,Volcán Tajumulco[176][bv][bw],Guatemala,Sierra de las Nubes,"4220 m13,845 ft","3990 m13,091 ft",722 km448 mi,15°02′35″N 91°54′13″W﻿ / ﻿15.0430°N 91.9037°W
-15,Melville Island High Point[320],Nunavut,Melville Island,"762 m2,500 ft","762 m2,500 ft",717 km445 mi,75°22′10″N 115°04′58″W﻿ / ﻿75.3694°N 115.0827°W
-16,La Grande Soufrière[321][fb][fc],Guadeloupe,île de Basse-Terre,"1467 m4,813 ft","1467 m4,813 ft",699 km434 mi,16°02′42″N 61°39′50″W﻿ / ﻿16.0449°N 61.6638°W
-17,Tanaga Volcano[322][323][fd][fe],Alaska,Tanaga Island,"1806 m5,925 ft","1806 m5,925 ft",656 km407 mi,51°53′02″N 178°08′34″W﻿ / ﻿51.8838°N 178.1429°W
-18,Avannaarsua High Point[324][ff],Greenland,Island of Greenland,"2600 m8,530 ft","500 m1,640 ft",636 km395 mi,77°30′00″N 47°37′00″W﻿ / ﻿77.5000°N 47.6167°W
-19,Mount Isto[297][298][em][en],Alaska,Brooks Range,"2736 m8,976 ft","2408 m7,901 ft",634 km394 mi,69°12′09″N 143°48′07″W﻿ / ﻿69.2025°N 143.8020°W
-20,Cerro San Rafael[325][326][fg][fh],Coahuila,Sierra Madre Oriental,"3730 m12,238 ft","1410 m4,626 ft",628 km390 mi,25°21′49″N 100°33′26″W﻿ / ﻿25.3637°N 100.5571°W
+Rank,Mountain peak,Elevation,Prominence,Isolation
+1,Denali,6190,6141,7450
+2,Gunnbjorn Fjeld,3694,3694,3254
+3,Pico de Orizaba,5636,4922,2690
+4,Mount Whitney,4421,3072,2649
+5,Mount Mitchell,2037,1857,1913
+6,Mount Washington,1917,1877,1318
+7,Mount Rainier,4394,4026,1176
+8,Mount Elbert,4401,2772,1079
+9,Pico Duarte,3098,3098,941000
+10,Chirripo Grande,3819,3755,878000
+11,Shishaldin Volcano,2869,2869,877000
+12,Barbeau Peak,2616,2616,796000
+13,Mount Caubvick,1652,1367,791000
+14,Volcan Tajumulco,4220,3990,722000
+15,Melville Island High Point,762,762,717000
+16,La Grande Soufriere,1467,1467,699000
+17,Tanaga Volcano,1806,1806,656000
+18,Avannaarsua High Point,2600,500,636000
+19,Mount Isto,2736,2408,634000
+20,Cerro San Rafael,3730,1410,628000

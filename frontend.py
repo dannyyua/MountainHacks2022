@@ -23,10 +23,9 @@ screen_helper = """
 ScreenManager:
     HomeScreen:
     AddScoreScreen:
-    LoadScreen:
+    ScoreScreen:
     EndingScreen:
     PlayScreen:
-    MultiScreen:
 
 <HomeScreen>:
     name: 'home'
@@ -40,7 +39,7 @@ ScreenManager:
     MDFillRoundFlatButton:
         text: 'HIGHSCORE'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
-        on_press: root.manager.current = 'join'
+        on_press: root.manager.current = 'score'
 
     # Play button
     MDFillRoundFlatButton:
@@ -53,7 +52,8 @@ ScreenManager:
     MDToolbar:
         title: 'Add Local Score'
         pos_hint: {'top': 1}
-        right_action_items: [['account-group']]
+        left_action_items: [['account-group']]
+        right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
 
     MDTextField:
         id: nickname
@@ -90,28 +90,31 @@ ScreenManager:
         pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
         font_size: 22
 
-    MDFillRoundFlatButton:
-        text: 'CANCEL'
-        pos_hint: {'center_x' : 0.2,'center_y' : 0.15}
-        on_press: app.resetGame()
-
     # Start button
-    MDRectangleFlatButton:
+    MDFillRoundFlatButton:
         text: 'SUBMIT'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
-        on_press: app.Connect()
+        on_press: app.register()
+        on_release: app.connect('addscreen')
         
+<ScoreScreen>:
+    name: 'score'
+    MDToolbar:
+        title: 'Local Leaderboard'
+        pos_hint: {'top': 1}
+        left_action_items: [['podium']]
+        right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
 
-<LoadScreen>:
-    #TODO
+
+
 
 <EndingScreen>:
     name: 'ending'
-    MDRectangleFlatButton:
+    MDFillRoundFlatButton:
         text: 'RETURN'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
         on_press: app.resetGame()
-    MDRectangleFlatButton:
+    MDFillRoundFlatButton:
         text: 'SUBMIT SCORE'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
         on_press: app.set_screen('addscore')
@@ -166,14 +169,14 @@ ScreenManager:
         halign: 'right'
         pos_hint: {'center_x' : 0.49, 'center_y': 0.80}
         font_size: 30
-        color: (1, 0, 1, 0.5)
+        color: (0, 0.29, 1, 1)
 
     MDLabel:
         text: root.currentScore
-        halign: 'right'
-        pos_hint: {'center_x' : 0.49, 'center_y': 0.72}
+        halign: 'center'
+        pos_hint: {'center_x' : 0.88, 'center_y': 0.72}
         font_size: 30
-        color: (0, 0.29, 1, 1)
+        color: (0, 0.29, 1, 0.5)
 
     MDLabel:
         text: "Guess This Mountain's..."
@@ -181,6 +184,13 @@ ScreenManager:
         pos_hint: {'center_x' : 0.5, 'center_y': 0.25}
         font_size: 30
         color: (0, 0.29, 1, 1)
+
+    MDLabel:
+        text: "(Numbers in meters)"
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.21}
+        font_size: 15
+        color: (0, 0.29, 0.8, 0.7)
 
     MDTextField:
         id: altitude
@@ -221,7 +231,7 @@ ScreenManager:
         multiline: False
         on_text_validate: app.processGuess()
 
-    MDRectangleFlatButton:
+    MDFillRoundFlatButton:
         text: 'SUBMIT'
         pos_hint: {'center_x' : 0.89, 'center_y': 0.25}
         on_press: app.processGuess()
@@ -235,13 +245,6 @@ ScreenManager:
         font_size: 22
         color: (1,0,0,1)
 
-        
-    
-<MultiScreen>:
-    name: 'multi'
-
-
-
 """
 
 
@@ -251,12 +254,11 @@ class HomeScreen(Screen):
 class AddScoreScreen(Screen):
     pass
 
-class LoadScreen(Screen):
+class ScoreScreen(Screen):
     pass
 
 class EndingScreen(Screen):
     pass
-
 
 class PlayScreen(Screen):
     rounds = 1
@@ -272,10 +274,6 @@ class PlayScreen(Screen):
     currentRound = StringProperty("Round " + str(rounds) + "/" + str(maxRounds))
     currentScore = StringProperty(str(score) + "/" + str(maxScore))
 
-class MultiScreen(Screen):
-    pass
-
-
 
 class MountainApp(MDApp):
     
@@ -283,11 +281,10 @@ class MountainApp(MDApp):
     sm = ScreenManager()
     sm.add_widget(HomeScreen(name='home'))
     sm.add_widget(AddScoreScreen(name='addscore'))
-    sm.add_widget(LoadScreen(name='load'))
+    sm.add_widget(ScoreScreen(name='score'))
     sm.add_widget(EndingScreen(name='ending'))
     sm.add_widget(PlayScreen(name='play'))
-    sm.add_widget(MultiScreen(name='multi'))
-    
+   
 
     plr = game_objects.Player("Mountain Mike") 
 
@@ -300,16 +297,20 @@ class MountainApp(MDApp):
     def set_screen(self, screen_name):
         self.navigation_bar.current = screen_name  
 
-    def Connect(self):
-        playerName = self.navigation_bar.get_screen('join').ids.nickname.text
-        playerIP =  self.navigation_bar.get_screen('join').ids.IP.text
-        playerPort = self.navigation_bar.get_screen('join').ids.port.text
+    def connect(self, screen):
+        playerIP =  self.navigation_bar.get_screen(screen).ids.IP.text
+        playerPort = self.navigation_bar.get_screen(screen).ids.port.text
         try:
+            global ws
             ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
-            ws.send(playerName)
-            self.manager.current = 'load'
+            self.manager.current = 'score'
         except ValueError or TimeoutError:
-            self.navigation_bar.get_screen('join').ids.IPerror.text = "Please Enter a valid IP"
+            self.navigation_bar.get_screen(screen).ids.IPerror.text = "Please Enter a valid IP"
+
+    def register(self):
+        playerName =  self.navigation_bar.get_screen('addscore').ids.nickname.text
+        playerScore = self.navigation_bar.get_screen('ending').ids.finalScore.text
+        ws.send((playerName,playerScore))
 
     def processGuess(self):
         
