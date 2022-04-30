@@ -32,5 +32,5 @@ client send
   "isolation":20,
 }
 
-'{"command":"player_guess","playerID":1,"altitude":500,"prominence":200,"isolation":20}'
-'{"command":"add_player","name":"zaidy","points":500,"ready":false}'
+{"command":"player_guess","playerID":0,"altitude":500,"prominence":200,"isolation":20}
+{"command":"add_player","name":"zaidy","points":500,"ready":false}

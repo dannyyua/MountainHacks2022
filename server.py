@@ -3,19 +3,19 @@ from email.message import Message
 import json
 from pydoc import cli
 import websockets
+import game_objects
 import game_logic
 import score
 
 # connect to this socket with python -m websockets ws://207.23.220.36:8765/
 
-ADDRESS = '207.23.220.36'
+ADDRESS = '192.168.56.1'
 PORT = 8765
 
 clients = set()
 
-roundGuesses = set()
-roundMountain = [game_logic.Mountain("default",0,0,0)]
-players = set()
+roundMountain = [game_objects.Mountain(0,"default",0,0,0)]
+players = [game_objects.Player] * 0
 
 async def call(client):
     async for message in client:
@@ -25,14 +25,19 @@ async def call(client):
         try:
             await parseCommand(json.loads(message))
         except json.decoder.JSONDecodeError:
-            print(message)
+            print("No command for: ", message)
 
 async def connectClient(c):
     clients.add(c)
     await sendAll(jsonPlayerCount())
 
 async def addPlayer(msg):
-    players.add(game_logic.Player(msg['name']))
+    players.append(game_objects.Player(msg['name']))
+    print(players[len(players)-1])
+
+async def addGuess(msg):
+    players[msg['playerID']].currentGuess = game_objects.Guess(msg['playerID'], msg['altitude'], msg['prominence'], msg['isolation'])
+    print(players[msg['playerID']].currentGuess)
 
 async def sendAll(msg):
     for client in clients:
@@ -44,23 +49,27 @@ async def parseCommand(msg):
     if (command == 'add_player'):
         await addPlayer(msg)
 
-    # if (command == "player_guess"):
-    #     roundGuesses.append(game_logic.Guess(msg['playerID'], msg['altitude'], msg['prominence'], msg['isolation']))
-    #     if (len(roundGuesses) == len(clients)):
-    #         players = score.gameScores(players, roundGuesses, roundMountain)
-    #         newRound()
+    if (command == "player_guess"):
+        await addGuess(msg)
+        newRound()
 
-# add score to players[playerID]
-def calculateGuesses(guesses, mountain):
-    pass
+def allPlayersReady():
+    for player in players:
+        if (not player.ready):
+            return False
+    return True
 
-def getRandomMountain():
-    pass
+def listOfGuesses():
+    guesses = []
+    for player in players:
+        guesses.append(player.currentGuess())
+    return guesses
     
 async def newRound():
-    roundMountain = getRandomMountain()
-    roundGuesses = game_logic.Guess[len(clients)]
-    await sendAll(jsonMountain(roundMountain))
+    if (allPlayersReady()):
+        players = score.gameScores(players, listOfGuesses(), roundMountain)
+        roundMountain = game_logic.RandomMountain()
+        await sendAll(jsonMountain(roundMountain))
 
 def jsonMountain(mountain):
     return json.dumps({
