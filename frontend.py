@@ -1,11 +1,15 @@
+import kivy
 from turtle import pos
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
+from kivy.uix.widget import Widget
 from kivy.uix.image import Image
 from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatButton
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDToolbar
+from kivy.lang.builder import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
 from enum import Enum
 import asyncio
 import websockets
@@ -16,81 +20,97 @@ async def hello():
         await websocket.recv()
 
 
-class State(Enum):
-    HOME = 0
-    JOIN = 1
-    WAITING = 2
-    PLAYING = 3
+
+screen_helper = """
+ScreenManager:
+    HomeScreen:
+    JoinScreen:
+    LoadScreen:
+
+<HomeScreen>:
+    name: 'home'
+    # Logo
+    Image:
+        source: 'logo.png'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.55}
+        size_hint: (0.8,0.8)
+
+    # Play button
+    MDFillRoundFlatButton:
+        text: 'PLAY'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
+        on_press: root.manager.current = 'join'
+    
+<JoinScreen>:
+    name: 'join'
+    MDToolbar:
+        title: 'Join'
+        pos_hint: {'top': 1}
+        right_action_items: [['account-group', lambda x : self.activateFan()]]
+
+    MDRectangleFlatButton:
+        text: 'Back'
+        pos_hint: {'center_x':0.5,'center_y':0.1}
+        on_press: root.manager.current = 'home'
+
+    MDTextField:
+        text: 'Enter your nickname'
+        halign: 'center'
+        size_hint: (0.8,1)
+        pos_hint:{'center_x' : 0.5, 'center_y': 0.7}
+        font_size: 22
+        
+    MDTextField:
+        text: 'Enter IP'
+        halign: 'center'
+        size_hint: (0.8,1)
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
+        font_size: 22
+
+    MDTextField:
+        text: 'Enter Port'
+        halign: 'center'
+        size_hint: (0.8,1)
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
+        font_size: 22
+        
+<LoadScreen>:
+    name: 'load'
+    MDLabel:
+        text: 'Upload'
+        halign: 'center'
+    MDRectangleFlatButton:
+        text: 'Back'
+        pos_hint: {'center_x':0.5,'center_y':0.1}
+        on_press: root.manager.current = 'menu'
+        
+"""
+
+
+class HomeScreen(Screen):
+    pass
+
+class JoinScreen(Screen):
+    pass
+
+class LoadScreen(Screen):
+    pass
+
+# class PlayScreen(Screen):
+#     pass
+
+# Create the screen manager
+sm = ScreenManager()
+sm.add_widget(HomeScreen(name='home'))
+sm.add_widget(JoinScreen(name='join'))
+sm.add_widget(LoadScreen(name='load'))
+
 
 class MountainApp(MDApp):
 
-    def retrivePlayer(self):
-        print("hi")
-
-    def joinScreen(self, player):
-        self.clear_widgets()
-
-        self.toolbar = MDToolbar(title = "Join")
-        self.toolbar.pos_hint = {"top": 1}
-        self.toolbar.right_action_items = [
-            ["account-group", lambda x : self.activateFan()]]
-        self.screen.add_widget(self.toolbar)
-
-        self.inputName = MDTextField(
-            text = "Enter your nickname: ",
-            halign = "center",
-            size_hint = (0.8,1),
-            pos_hint = {"center_x" : 0.5, "center_y": 0.7},
-            font_size = 22
-        )
-        self.screen.add_widget(self.inputName)
-
-        self.inputIP = MDTextField(
-            text = "Enter IP: ",
-            halign = "center",
-            size_hint = (0.8,1),
-            pos_hint = {"center_x" : 0.5, "center_y": 0.5},
-            font_size = 22
-        )
-        self.screen.add_widget(self.inputIP)
-
-        self.inputPort = MDTextField(
-            text = "Enter Port: ",
-            halign = "center",
-            size_hint = (0.8,1),
-            pos_hint = {"center_x" : 0.5, "center_y": 0.3},
-            font_size = 22
-        )
-        self.screen.add_widget(self.inputPort)
-
-
-
-        
-    
 
     def build(self):
-        curState = State.HOME
-
-        playerCount = 2 #TODO
-        
-        screen = MDScreen()
-
-        # Top Toolbar (Title)
-        self.toolbar = MDToolbar(title = "Mountain Guesser")
-        self.toolbar.pos_hint = {"top": 1}
-        self.toolbar.right_action_items = [
-            ["android-auto", lambda x : self.activateFan()]]
-        screen.add_widget(self.toolbar)
-
-        # Logo
-        # screen.add_widget(Image(
-        #     source = "logo.png",
-        #     pos_hint = {"center_x" : 0.5, "center_y": 0.7}
-        #   )
-        # )
-
-        
-
+        screen = Builder.load_string(screen_helper)
         return screen
 
 if __name__ == '__main__':
