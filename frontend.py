@@ -16,6 +16,7 @@ from websocket import create_connection
 import game_logic
 import game_objects
 import os
+import score
 from kivy.properties import StringProperty
 
 screen_helper = """
@@ -186,13 +187,6 @@ ScreenManager:
         pos_hint: {'center_x' : 0.8, 'center_y': 0.14}
         font_size: 22
         multiline: False
-
-    # Submit button
-    MDRectangleFlatButton:
-        text: 'SUBMIT'
-        pos_hint: {'center_x' : 0.89, 'center_y': 0.25}
-        on_press: app.test()
-        
 <MultiScreen>:
     name: 'multi'
     
@@ -217,6 +211,8 @@ class PlayScreen(Screen):
 
     mountain = game_logic.RandomMountain()
     imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
+
+
     mountainName = StringProperty(str(mountain.name))
     currentRound = StringProperty("Round " + str(rounds) + "/" + str(max_rounds))
     currentScore = StringProperty(str(score) + "/" + str(max_score))
@@ -261,9 +257,24 @@ class MountainApp(MDApp):
             self.manager.current = 'load'
         except ValueError or TimeoutError:
             self.navigation_bar.get_screen('join').ids.IPerror.text = "Please Enter a valid IP"
-            
-    def test(self):
-        print(self.navigation_bar.get_screen('play').rounds)
+
+    def processGuess(self):
+        self.navigation_bar.get_screen('play').rounds += 1
+        guessHeight = self.navigation_bar.get_screen('play').ids.altitude.text
+        guessProm = self.navigation_bar.get_screen('play').ids.prominence.text
+        guessIso = self.navigation_bar.get_screen('play').ids.isolation.text
+        actualHeight = self.navigation_bar.get_screen('play').mountain.altitude
+        actualProm = self.navigation_bar.get_screen('play').mountain.prominence
+        actualIso = self.navigation_bar.get_screen('play').mountain.isolation
+        self.navigation_bar.get_screen('play').score += score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
+
+        mountain = game_logic.RandomMountain()
+        imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
+
+        mountainName = StringProperty(str(mountain.name))
+        currentRound = StringProperty("Round " + str(self.navigation_bar.get_screen('play').rounds) + "/" + str(self.navigation_bar.get_screen('play').max_rounds))
+        currentScore = StringProperty(str(score) + "/" + str(self.navigation_bar.get_screen('play').max_score))
+        
     
 
 if __name__ == '__main__':
