@@ -32,16 +32,14 @@ client send
   "isolation":20,
 }
 
-{"command":"player_guess","playerID":0,"altitude":500,"prominence":200,"isolation":20}
-{"command":"add_player","name":"zaidy","points":500,"ready":false}
+PASTE
+python -m websockets ws://YOUR_IP:CHOSEN_PORT/
 
-{"command":"send_score", "name":player.name, "score":player.score}
-
+PASTE
+{"command":"send_score", "name":"june", "score":90}
+{"command":"send_score", "name":"justin", "score":20}
 {"command":"send_score", "name":"zaid", "score":100}
 {"command":"send_score", "name":"danny", "score":90}
 {"command":"send_score", "name":"fazal", "score":20}
-
 {"command":"get_top_scores"}
-
-{"command":"get_top_scores","scores":[{"name":"zaid","score":100},{"name":"danny","score":90},{"name":"fazal","score":80}]}
 
