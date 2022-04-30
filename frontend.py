@@ -160,7 +160,7 @@ ScreenManager:
         hint_text: 'Altitude'
         helper_text: 'Height of the mountain'
         helper_text_mode: 'on_focus'
-        halign: 'left'
+        halign: 'center'
         size_hint_x: 0.2
         pos_hint: {'center_x' : 0.2, 'center_y': 0.14}
         font_size: 22
@@ -182,7 +182,7 @@ ScreenManager:
         hint_text: 'Isolation'
         helper_text: 'Distance to nearest mountain'
         helper_text_mode: 'on_focus'
-        halign: 'right'
+        halign: 'center'
         size_hint_x: 0.2
         pos_hint: {'center_x' : 0.8, 'center_y': 0.14}
         font_size: 22
@@ -214,7 +214,7 @@ class LoadScreen(Screen):
 class PlayScreen(Screen):
     rounds = 0
     max_rounds = 5
-    score = 60
+    score = 0
     max_score = 200
 
     mountain = game_logic.RandomMountain()
@@ -268,7 +268,6 @@ class MountainApp(MDApp):
 
     def processGuess(self):
         playScreen = self.navigation_bar.get_screen('play')
-        print(playScreen.mountain.altitude)
         playScreen.rounds += 1
         guessHeight = int(playScreen.ids.altitude.text)
         guessProm = int(playScreen.ids.prominence.text)
@@ -277,14 +276,14 @@ class MountainApp(MDApp):
         actualProm = int(playScreen.mountain.prominence)
         actualIso = int(playScreen.mountain.isolation)
         
-        self.navigation_bar.get_screen('play').score += score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
+        playScreen.score += score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
 
         playScreen.mountain = game_logic.RandomMountain()
         playScreen.imageName = StringProperty("images/" + str(playScreen.mountain.rank) + ".jpg")
 
         playScreen.mountainName = StringProperty(str(playScreen.mountain.name))
-        playScreen.currentRound = StringProperty("Round " + str(self.navigation_bar.get_screen('play').rounds) + "/" + str(self.navigation_bar.get_screen('play').max_rounds))
-        playScreen.currentScore = StringProperty(str(score) + "/" + str(self.navigation_bar.get_screen('play').max_score))
+        playScreen.currentRound = StringProperty("Round " + str(playScreen.rounds) + "/" + str(playScreen.max_rounds))
+        playScreen.currentScore = StringProperty(str(score) + "/" + str(playScreen.max_score))
     
     def test(self):
         print("hi")
