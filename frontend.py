@@ -21,6 +21,7 @@ ScreenManager:
     JoinScreen:
     LoadScreen:
     PlayScreen:
+    MultiScreen:
 
 <HomeScreen>:
     name: 'home'
@@ -99,6 +100,9 @@ ScreenManager:
         
 <PLayScreen>:
     name: 'play'
+
+<MultiScreen>:
+    name: 'multi'
     
 
 """
@@ -116,6 +120,8 @@ class LoadScreen(Screen):
 class PlayScreen(Screen):
     pass
 
+class MultiScreen(Screen):
+    pass
 
 
 # Create the screen manager
@@ -124,7 +130,7 @@ sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(JoinScreen(name='join'))
 sm.add_widget(LoadScreen(name='load'))
 sm.add_widget(PlayScreen(name='play'))
-
+sm.add_widget(MultiScreen(name='multi'))
 
 
 
