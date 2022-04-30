@@ -10,6 +10,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDToolbar
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.gridlayout import GridLayout
 from enum import Enum
 from websocket import create_connection
 import game_logic
@@ -129,7 +130,62 @@ ScreenManager:
         halign: 'center'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.85}
         font_size: 30
+        color: (0, 0.29, 1, 1)
+
+    MDLabel:
+        markup: True
+        text: '[u]' + 'Current Score' +'[/u]'
+        halign: 'right'
+        pos_hint: {'center_x' : 0.49, 'center_y': 0.80}
+        font_size: 30
         color: (1, 0, 1, 0.5)
+
+    MDLabel:
+        text: root.currentScore
+        halign: 'right'
+        pos_hint: {'center_x' : 0.49, 'center_y': 0.72}
+        font_size: 30
+        color: (0, 0.29, 1, 1)
+
+    MDLabel:
+        text: "Guess This Mountain's..."
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.25}
+        font_size: 30
+        color: (0, 0.29, 1, 1)
+
+    MDTextField:
+        id: altitude
+        hint_text: 'Altitude'
+        helper_text: 'Height of the mountain'
+        helper_text_mode: 'on_focus'
+        halign: 'left'
+        size_hint_x: 0.2
+        pos_hint: {'center_x' : 0.2, 'center_y': 0.14}
+        font_size: 22
+        multiline: False
+
+    MDTextField:
+        id: prominence
+        hint_text: 'Prominence'
+        helper_text: 'Relative height of peaks'
+        helper_text_mode: 'on_focus'
+        halign: 'center'
+        size_hint_x: 0.2
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.14}
+        font_size: 22
+        multiline: False
+
+    MDTextField:
+        id: isolation
+        hint_text: 'Isolation'
+        helper_text: 'Distance to nearest mountain'
+        helper_text_mode: 'on_focus'
+        halign: 'right'
+        size_hint_x: 0.2
+        pos_hint: {'center_x' : 0.8, 'center_y': 0.14}
+        font_size: 22
+        multiline: False
 <MultiScreen>:
     name: 'multi'
     
@@ -149,7 +205,8 @@ class LoadScreen(Screen):
 class PlayScreen(Screen):
     rounds = 0
     max_rounds = 5
-    
+    score = 60
+    max_score = 200
 
     mountain = game_logic.RandomMountain()
     #imageName = StringProperty(str(mountain.rank) + ".png")
@@ -158,6 +215,7 @@ class PlayScreen(Screen):
 
     mountainName = StringProperty(str(mountain.name))
     currentRound = StringProperty("Round " + str(rounds) + "/" + str(max_rounds))
+    currentScore = StringProperty(str(score) + "/" + str(max_score))
 
 class MultiScreen(Screen):
     pass
