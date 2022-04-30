@@ -31,4 +31,21 @@ Installing and running program
 pip install -r requirements.txt
 ```
 
+Running the server
+```
+python server.py
+```
+
+Testing the server
+```
+python -m websockets ws://YOUR_IP:CHOSEN_PORT/
+
+{"command":"send_score", "name":"june", "score":90}
+{"command":"send_score", "name":"justin", "score":20}
+{"command":"send_score", "name":"zaid", "score":100}
+{"command":"send_score", "name":"danny", "score":90}
+{"command":"send_score", "name":"fazal", "score":20}
+{"command":"get_top_scores"}
+```
+
 simply run frontend.py and continue!
