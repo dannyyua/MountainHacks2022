@@ -212,18 +212,18 @@ class LoadScreen(Screen):
     pass
 
 class PlayScreen(Screen):
-    rounds = 0
-    max_rounds = 5
+    rounds = 1
+    maxRounds = 5
     score = 0
-    max_score = 200
+    maxScore = 0
 
     mountain = game_logic.RandomMountain()
     imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
 
 
     mountainName = StringProperty(str(mountain.name))
-    currentRound = StringProperty("Round " + str(rounds) + "/" + str(max_rounds))
-    currentScore = StringProperty(str(score) + "/" + str(max_score))
+    currentRound = StringProperty("Round " + str(rounds) + "/" + str(maxRounds))
+    currentScore = StringProperty(str(score) + "/" + str(maxScore))
 
 class MultiScreen(Screen):
     pass
@@ -275,15 +275,16 @@ class MountainApp(MDApp):
         actualHeight = int(playScreen.mountain.altitude)
         actualProm = int(playScreen.mountain.prominence)
         actualIso = int(playScreen.mountain.isolation)
-        
-        playScreen.score += score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
+        playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
+        playScreen.maxScore += 30
 
-        playScreen.mountain = game_logic.RandomMountain()
-        playScreen.imageName = StringProperty("images/" + str(playScreen.mountain.rank) + ".jpg")
+        if (playScreen.rounds <= playScreen.maxRounds):
+            playScreen.mountain = game_logic.RandomMountain()
+            playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
 
-        playScreen.mountainName = StringProperty(str(playScreen.mountain.name))
-        playScreen.currentRound = StringProperty("Round " + str(playScreen.rounds) + "/" + str(playScreen.max_rounds))
-        playScreen.currentScore = StringProperty(str(score) + "/" + str(playScreen.max_score))
+            playScreen.mountainName = str(playScreen.mountain.name)
+            playScreen.currentRound = "Round " + str(playScreen.rounds) + "/" + str(playScreen.maxRounds)
+            playScreen.currentScore = str(playScreen.score) + "/" + str(playScreen.maxScore)
     
     def test(self):
         print("hi")
