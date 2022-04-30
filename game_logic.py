@@ -5,7 +5,7 @@ class Player:
         self.ready = False
 
 class Guess:
-    def __init__(self, altitude, diameter, isolation):
+    def __init__(self, altitude, prominence, isolation):
         self.altitude = altitude
-        self.diameter = diameter
+        self.prominence = prominence
         self.isolation = isolation
