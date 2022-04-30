@@ -1,6 +1,9 @@
 import random
+import game_objects
+from ssl import ALERT_DESCRIPTION_UNSUPPORTED_EXTENSION
+from unicodedata import name
 
-def Randomline():
+def randomLine():
 
     filesize = 51
     offset = random.randrange(filesize)
@@ -17,4 +20,9 @@ def Randomline():
     return random_line
 
 def RandomMountain():
-    
+    line = randomLine().split(",")
+    name = line[1].split("[")[0]
+    altitude = line[4].strip('"').split(" ")[0]
+    prominence = line[5].strip('"').split(" ")[0]
+    isolation = line[6].strip('"')
+    return game_objects.Mountain(name, altitude, prominence, isolation)
