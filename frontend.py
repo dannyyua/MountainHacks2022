@@ -13,6 +13,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from enum import Enum
 from websocket import create_connection
 import game_logic
+import game_objects
 import os
 
 screen_helper = """
@@ -142,7 +143,7 @@ sm.add_widget(MultiScreen(name='multi'))
 
 class MountainApp(MDApp):
 
-    plr = game_logic.Player("Mountain Mike") 
+    plr = game_objects.Player("Mountain Mike") 
 
     def build(self):
         screen = Screen()
