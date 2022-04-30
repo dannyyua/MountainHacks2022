@@ -1,6 +1,4 @@
-
 from typing import final
-
 
 def score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso):
     heightScore = guessHeight/actualHeight
