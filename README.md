@@ -3,6 +3,12 @@
 </p>
 
 ---
+Collaborators:
+- June Lee jhl66@sfu.ca
+- Fazal Rehman fra22@sfu.ca
+- Danny Yu dya46@sfu.ca
+- Zaid Arshad zaa10@sfu.ca
+
 Built using Python, kivy, kivyMD and WebSocket API
 Mystery Mountain is a guessing game for the mountainous adept who wish to hone their mountain skills. 
 
