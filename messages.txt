@@ -9,8 +9,7 @@ client send
   "command": "player_guess",
   "playerID":1,
   "altitude":500,
-  "temp":-2.6,
-  "snowfall":20,
-  "hasGondola":true
+  "diameter":-2.6,
+  "isolation":20,
 }
 
