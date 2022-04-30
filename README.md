@@ -3,8 +3,8 @@
 </p>
 
 ---
-Built using python, kivy, kivyMD, WebSocket, Mystery Mountain is a guessing game for the
-mountainous adept who wish to hone their mountain skills. 
+Built using Python, kivy, kivyMD and WebSocket
+Mystery Mountain is a guessing game for the mountainous adept who wish to hone their mountain skills. 
 
 Gameplay consists of being given 5 rounds. In each round you are given a Mountain Peak and its corresponding image. You must then guess three very important pieces of information:
 
