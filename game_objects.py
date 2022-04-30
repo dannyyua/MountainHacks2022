@@ -33,4 +33,4 @@ class Mountain:
 class Score:
     def __init__(self, name, score):
         self.name = name
-        self.points = score
+        self.score = score
