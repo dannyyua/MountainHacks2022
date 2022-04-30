@@ -3,13 +3,34 @@ server send
   "command": "player_count",
   "count":4
 }
+{
+  "command":"new_mountain",
+  "name":"burnaby mountain"
+  "altitude":500,
+  "prominence":200,
+  "isolation":20,
+}
+{
+  "command":"update_scores",
+  "scores":[5,5,5,5]
+}
+
 
 client send
-{
+'{
   "command": "player_guess",
   "playerID":1,
   "altitude":500,
-  "diameter":-2.6,
+  "prominence":200,
+  "isolation":20,
+}'
+{
+  "command":"player_ready",
+  "id":"burnaby mountain"
+  "altitude":500,
+  "prominence":200,
   "isolation":20,
 }
 
+'{"command":"player_guess","playerID":1,"altitude":500,"prominence":200,"isolation":20}'
+'{"command":"add_player","name":"zaidy","points":500,"ready":false}'
