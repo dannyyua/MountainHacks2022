@@ -10,3 +10,11 @@ class Guess:
         self.altitude = altitude
         self.prominence = prominence
         self.isolation = isolation
+
+class Mountain:
+    def __init__(self, name, altitude, prominence, isolation):
+        self.name = name
+        self.altitude = altitude
+        self.prominence = prominence
+        self.isolation = isolation
+        
