@@ -121,8 +121,8 @@ ScreenManager:
 
     Image:
         source: root.imageName
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
-        size_hint: (0.8,0.8)
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.55}
+        size_hint: (0.5,0.5)
     
     MDLabel:
         markup: True
@@ -209,8 +209,7 @@ class PlayScreen(Screen):
     max_score = 200
 
     mountain = game_logic.RandomMountain()
-    #imageName = StringProperty(str(mountain.rank) + ".png")
-    imageName = StringProperty("logo.png")
+    imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
 
 
     mountainName = StringProperty(str(mountain.name))
