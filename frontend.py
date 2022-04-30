@@ -187,6 +187,14 @@ ScreenManager:
         pos_hint: {'center_x' : 0.8, 'center_y': 0.14}
         font_size: 22
         multiline: False
+        # Submit button
+
+    MDRectangleFlatButton:
+        text: 'SUBMIT'
+        pos_hint: {'center_x' : 0.89, 'center_y': 0.25}
+        on_press: app.processGuess()
+        
+    
 <MultiScreen>:
     name: 'multi'
     
@@ -274,7 +282,9 @@ class MountainApp(MDApp):
         mountainName = StringProperty(str(mountain.name))
         currentRound = StringProperty("Round " + str(self.navigation_bar.get_screen('play').rounds) + "/" + str(self.navigation_bar.get_screen('play').max_rounds))
         currentScore = StringProperty(str(score) + "/" + str(self.navigation_bar.get_screen('play').max_score))
-        
+    
+    def test(self):
+        print("hi")
     
 
 if __name__ == '__main__':
