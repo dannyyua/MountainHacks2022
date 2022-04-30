@@ -317,8 +317,13 @@ class MountainApp(MDApp):
                 # Update values
                 playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
                 playScreen.rounds += 1
-                playScreen.maxScore += 30
+                playScreen.maxScore += 10
                 playScreen.mountain = game_logic.RandomMountain()
+                # Reset fields
+                playScreen.ids.altitude.text = ""
+                playScreen.ids.prominence.text = ""
+                playScreen.ids.isolation.text = ""
+                playScreen.ids.valueError.text = ""
                 # Update Screen tags
                 playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
                 playScreen.mountainName = str(playScreen.mountain.name)
@@ -335,9 +340,7 @@ class MountainApp(MDApp):
                 actualProm = int(playScreen.mountain.prominence)
                 actualIso = int(playScreen.mountain.isolation)
                 playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
-                playScreen.rounds += 1
-                playScreen.maxScore += 30
-                playScreen.mountain = game_logic.RandomMountain()
+                playScreen.maxScore += 10
                 self.set_screen('ending')
                 self.navigation_bar.get_screen('ending').ids.finalScore.text = "[b]"+str(playScreen.score) + "/" + str(playScreen.maxScore)+"[/b]"
             except ValueError:
