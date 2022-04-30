@@ -25,6 +25,7 @@ ScreenManager:
     HomeScreen:
     JoinScreen:
     LoadScreen:
+    PlayScreen:
 
 <HomeScreen>:
     name: 'home'
@@ -47,30 +48,36 @@ ScreenManager:
         pos_hint: {'top': 1}
 
     MDTextField:
-        text: 'Enter Your Nickname'
+        hint_text: 'Enter Your Nickname'
         halign: 'center'
-        size_hint: (0.8,1)
-        pos_hint:{'center_x' : 0.5, 'center_y': 0.3}
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.7}
         font_size: 22
-        
+    
     MDTextField:
-        text: 'Enter IP'
+        hint_text: 'Enter IP'
         halign: 'center'
-        size_hint: (0.8,1)
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
         font_size: 22
 
     MDTextField:
-        text: 'Enter Port'
+        hint_text: 'Enter Port'
         halign: 'center'
-        size_hint: (0.8,1)
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
         font_size: 22
     
     MDFillRoundFlatButton:
         text: 'Back'
-        pos_hint: {'center_x' : 0.2,'center_y' : 0.2}
+        pos_hint: {'center_x' : 0.2,'center_y' : 0.15}
         on_press: root.manager.current = 'home'
+
+    # Start button
+    MDRectangleFlatButton:
+        text: 'START'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
+        on_press: root.manager.current = 'join'
 
 <LoadScreen>:
     name: 'load'
@@ -82,6 +89,10 @@ ScreenManager:
         pos_hint: {'center_x':0.5,'center_y':0.1}
         on_press: root.manager.current = 'menu'
         
+<PLayScreen>:
+    name: 'play'
+    
+
 """
 
 
@@ -94,15 +105,15 @@ class JoinScreen(Screen):
 class LoadScreen(Screen):
     pass
 
-# class PlayScreen(Screen):
-#     pass
+class PlayScreen(Screen):
+    pass
 
 # Create the screen manager
 sm = ScreenManager()
 sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(JoinScreen(name='join'))
 sm.add_widget(LoadScreen(name='load'))
-
+sm.add_widget(LoadScreen(name='play'))
 
 class MountainApp(MDApp):
 
