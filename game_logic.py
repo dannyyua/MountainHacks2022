@@ -5,8 +5,16 @@ class Player:
         self.ready = False
 
 class Guess:
-    def __init__(self, altitude, avgTemp, avgSnow, hasGondola):
+    def __init__(self, playerID, altitude, prominence, isolation):
+        self.playerID = playerID
         self.altitude = altitude
-        self.avgTemp = avgTemp
-        self.avgSnow = avgSnow
-        self.hasGondola = hasGondola
+        self.prominence = prominence
+        self.isolation = isolation
+
+class Mountain:
+    def __init__(self, name, altitude, prominence, isolation):
+        self.name = name
+        self.altitude = altitude
+        self.prominence = prominence
+        self.isolation = isolation
+        

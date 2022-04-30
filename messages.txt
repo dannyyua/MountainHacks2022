@@ -1,0 +1,15 @@
+server send
+{
+  "command": "player_count",
+  "count":4
+}
+
+client send
+{
+  "command": "player_guess",
+  "playerID":1,
+  "altitude":500,
+  "diameter":-2.6,
+  "isolation":20,
+}
+
