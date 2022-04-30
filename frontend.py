@@ -13,8 +13,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from enum import Enum
 from websocket import create_connection
 import game_logic
-
-
+import os
 
 screen_helper = """
 ScreenManager:
@@ -67,7 +66,15 @@ ScreenManager:
         size_hint_x: 0.4
         pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
         font_size: 22
-    
+
+    MDLabel:
+        id: IPerror
+        text: ''
+        halign: 'center'
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
+        font_size: 22
+
     MDFillRoundFlatButton:
         text: 'Back'
         pos_hint: {'center_x' : 0.2,'center_y' : 0.15}
@@ -77,8 +84,8 @@ ScreenManager:
     MDRectangleFlatButton:
         text: 'START'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
-        on_press: root.manager.current = 'load'
         on_press: app.Connect()
+        
 
 <LoadScreen>:
     name: 'load'
@@ -103,10 +110,8 @@ class HomeScreen(Screen):
 class JoinScreen(Screen):
     pass
 
-
 class LoadScreen(Screen):
     pass
-
 
 class PlayScreen(Screen):
     pass
@@ -118,7 +123,10 @@ sm = ScreenManager()
 sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(JoinScreen(name='join'))
 sm.add_widget(LoadScreen(name='load'))
-sm.add_widget(LoadScreen(name='play'))
+sm.add_widget(PlayScreen(name='play'))
+
+
+
 
 class MountainApp(MDApp):
 
@@ -134,10 +142,14 @@ class MountainApp(MDApp):
         playerName = self.navigation_bar.get_screen('join').ids.nickname.text
         playerIP =  self.navigation_bar.get_screen('join').ids.IP.text
         playerPort = self.navigation_bar.get_screen('join').ids.port.text
-        ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
-        print("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
-        ws.send(playerName)
-
+        try:
+            ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+            ws.send(playerName)
+            self.manager.current = 'load'
+        except ValueError or TimeoutError:
+            self.navigation_bar.get_screen('join').ids.IPerror.text = "Please Enter a valid IP"
+            
+        
     
 
 if __name__ == '__main__':
