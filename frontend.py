@@ -15,10 +15,10 @@ from enum import Enum
 from websocket import create_connection
 import game_logic
 import game_objects
-import os
 import score
 import json
 from kivy.properties import StringProperty
+
 
 screen_helper = """
 ScreenManager:
@@ -108,7 +108,7 @@ ScreenManager:
         right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
 
     MDTextField:
-        id: IP
+        id: IP_L
         hint_text: 'Enter IP'
         halign: 'center'
         size_hint_x: 0.4
@@ -117,7 +117,7 @@ ScreenManager:
         multiline: False
 
     MDTextField:
-        id: port
+        id: port_L
         hint_text: 'Enter Port'
         halign: 'center'
         size_hint_x: 0.4
@@ -126,7 +126,7 @@ ScreenManager:
         multiline: False
 
     MDLabel:
-        id: IPerror
+        id: IPerror_L
         text: ''
         halign: 'center'
         size_hint_x: 0.4
@@ -146,13 +146,55 @@ ScreenManager:
         pos_hint: {'top': 1}
         left_action_items: [['podium']]
         right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
-    MDDataTable:
-        pos_hint:  {'center_x' : 0.5, 'center_y': 0.5}
-        size_hint: (0.9,0.6)
-        column_data: [('No.', dp(18)),('Name', dp(20)),('Score', dp(20))]
-        row_data: []
-
-
+    
+    MDLabel:
+        markup: True
+        text: '[u][b]'+"No.         Name          Score"+'[/b][/u]'
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.8}
+        font_size: 30
+        color: (0, 0.29, 1, 1)
+    
+    MDLabel:
+        id: r1
+        markup: True
+        text: ""
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.7}
+        font_size: 15
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        id: r2
+        markup: True
+        text: ""
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.6}
+        font_size: 15
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        id: r3
+        markup: True
+        text: ""
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
+        font_size: 15
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        id: r4
+        markup: True
+        text: ""
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.4}
+        font_size: 15
+        color: (0, 0.29, 1, 1)
+    MDLabel:
+        id: r5
+        markup: True
+        text: ""
+        halign: 'center'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
+        font_size: 15
+        color: (0, 0.29, 1, 1)
 
 
 <EndingScreen>:
@@ -302,7 +344,7 @@ class AddScoreScreen(Screen):
     pass
 
 class ScoreScreen(Screen):
-    pass
+    pass        
 
 class AddLinkScreen(Screen):
     pass
@@ -349,15 +391,14 @@ class MountainApp(MDApp):
         self.navigation_bar.current = screen_name  
 
     def connect(self):
-        playerIP =  self.navigation_bar.get_screen('addlink').ids.IP.text
-        playerPort = self.navigation_bar.get_screen('addlink').ids.port.text
+        playerIP =  self.navigation_bar.get_screen('addlink').ids.IP_L.text
+        playerPort = self.navigation_bar.get_screen('addlink').ids.port_L.text
         try:
-            
             ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
             self.fillScores(ws)
-            self.manager.current = 'score'
+            self.set_screen('score')
         except ValueError or TimeoutError:
-            self.navigation_bar.get_screen('addlink').ids.IPerror.text = "Please Enter a valid IP"
+            self.navigation_bar.get_screen('addlink').ids.IPerror_L.text = "Please Enter a valid IP"
 
     def register(self):
         playerIP =  self.navigation_bar.get_screen('addscore').ids.IP.text
@@ -368,21 +409,40 @@ class MountainApp(MDApp):
             ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
             ws.send(self.jsonScore(playerName,playerScore))
             self.fillScores(ws)
-            self.manager.current = 'score'
+            self.set_screen('score')
         except ValueError:
             self.navigation_bar.get_screen('addscore').ids.IPerror.text = "Please Enter a valid IP"
 
-    def jsonScore(playerName, playerScore):
+    def jsonScore(self, playerName, playerScore):
         return json.dumps({
             "command":"send_score",
             "name":playerName,
             "score":playerScore
         })
 
-    def fillScores(self, ws):
+    async def obtainScores(self, ws):
         ws.send("get_top_scores")
+        scores = [game_objects.Score]
+        scoresJson = json.loads(ws.recv())["scores"]
+        for score in scoresJson:
+            scores.append(game_objects.Score(score["name"], score["score"]))
         
+        return scores
 
+    async def fillScores(self, ws):
+        print("reached")
+        scores = self.obtainScores(ws)
+        list = []
+        for i in range(len(scores)):
+            rank_ = i+1
+            name_ = scores[i].name
+            score_ = scores[i].score
+            list.append((rank_,name_,score_))
+        self.navigation_bar.get_screen('score').ids.r1.text = str(list[0][0])+"     "+str(list[0][1])+"     "+str(list[0][2])
+        self.navigation_bar.get_screen('score').ids.r2.text = str(list[1][0])+"     "+str(list[1][1])+"     "+str(list[1][2])
+        self.navigation_bar.get_screen('score').ids.r3.text = str(list[2][0])+"     "+str(list[2][1])+"     "+str(list[2][2])
+        self.navigation_bar.get_screen('score').ids.r4.text = str(list[3][0])+"     "+str(list[3][1])+"     "+str(list[3][2])
+        self.navigation_bar.get_screen('score').ids.r5.text = str(list[4][0])+"     "+str(list[4][1])+"     "+str(list[4][2])
 
     def processGuess(self):
         
