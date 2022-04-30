@@ -12,7 +12,8 @@ class Guess:
         self.isolation = isolation
 
 class Mountain:
-    def __init__(self, name, altitude, prominence, isolation):
+    def __init__(rank, self, name, altitude, prominence, isolation):
+        self.rank = rank
         self.name = name
         self.altitude = altitude
         self.prominence = prominence

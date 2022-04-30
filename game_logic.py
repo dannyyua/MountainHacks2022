@@ -21,8 +21,9 @@ def randomLine():
 
 def RandomMountain():
     line = randomLine().split(",")
+    rank = line[0]
     name = line[1].split("[")[0]
     altitude = line[4].strip('"').split(" ")[0]
     prominence = line[5].strip('"').split(" ")[0]
     isolation = line[6].strip('"')
-    return game_objects.Mountain(name, altitude, prominence, isolation)
+    return game_objects.Mountain(rank, name, altitude, prominence, isolation)
