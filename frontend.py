@@ -17,6 +17,7 @@ import game_logic
 import game_objects
 import os
 import score
+import json
 from kivy.properties import StringProperty
 
 screen_helper = """
@@ -24,6 +25,7 @@ ScreenManager:
     HomeScreen:
     AddScoreScreen:
     ScoreScreen:
+    AddLinkScreen:
     EndingScreen:
     PlayScreen:
 
@@ -39,7 +41,7 @@ ScreenManager:
     MDFillRoundFlatButton:
         text: 'HIGHSCORE'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
-        on_press: root.manager.current = 'score'
+        on_press: root.manager.current = 'addlink'
 
     # Play button
     MDFillRoundFlatButton:
@@ -95,8 +97,48 @@ ScreenManager:
         text: 'SUBMIT'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
         on_press: app.register()
-        on_release: app.connect('addscreen')
-        
+
+<AddLinkScreen>:
+    name: 'addlink'
+
+    MDToolbar:
+        title: 'Enter Connection'
+        pos_hint: {'top': 1}
+        left_action_items: [['account-group']]
+        right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
+
+    MDTextField:
+        id: IP
+        hint_text: 'Enter IP'
+        halign: 'center'
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
+        font_size: 22
+        multiline: False
+
+    MDTextField:
+        id: port
+        hint_text: 'Enter Port'
+        halign: 'center'
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
+        font_size: 22
+        multiline: False
+
+    MDLabel:
+        id: IPerror
+        text: ''
+        halign: 'center'
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
+        font_size: 22
+
+    # Start button
+    MDFillRoundFlatButton:
+        text: 'SUBMIT'
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.15}
+        on_press: app.connect()
+
 <ScoreScreen>:
     name: 'score'
     MDToolbar:
@@ -104,6 +146,11 @@ ScreenManager:
         pos_hint: {'top': 1}
         left_action_items: [['podium']]
         right_action_items: [['exit-to-app', lambda x : app.resetGame()]]
+    MDDataTable:
+        pos_hint:  {'center_x' : 0.5, 'center_y': 0.5}
+        size_hint: (0.9,0.6)
+        column_data: [('No.', dp(18)),('Name', dp(20)),('Score', dp(20))]
+        row_data: []
 
 
 
@@ -257,6 +304,9 @@ class AddScoreScreen(Screen):
 class ScoreScreen(Screen):
     pass
 
+class AddLinkScreen(Screen):
+    pass
+
 class EndingScreen(Screen):
     pass
 
@@ -282,6 +332,7 @@ class MountainApp(MDApp):
     sm.add_widget(HomeScreen(name='home'))
     sm.add_widget(AddScoreScreen(name='addscore'))
     sm.add_widget(ScoreScreen(name='score'))
+    sm.add_widget(AddLinkScreen(name='addlink'))
     sm.add_widget(EndingScreen(name='ending'))
     sm.add_widget(PlayScreen(name='play'))
    
@@ -297,20 +348,41 @@ class MountainApp(MDApp):
     def set_screen(self, screen_name):
         self.navigation_bar.current = screen_name  
 
-    def connect(self, screen):
-        playerIP =  self.navigation_bar.get_screen(screen).ids.IP.text
-        playerPort = self.navigation_bar.get_screen(screen).ids.port.text
+    def connect(self):
+        playerIP =  self.navigation_bar.get_screen('addlink').ids.IP.text
+        playerPort = self.navigation_bar.get_screen('addlink').ids.port.text
         try:
-            global ws
+            
             ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+            self.fillScores(ws)
             self.manager.current = 'score'
         except ValueError or TimeoutError:
-            self.navigation_bar.get_screen(screen).ids.IPerror.text = "Please Enter a valid IP"
+            self.navigation_bar.get_screen('addlink').ids.IPerror.text = "Please Enter a valid IP"
 
     def register(self):
+        playerIP =  self.navigation_bar.get_screen('addscore').ids.IP.text
+        playerPort = self.navigation_bar.get_screen('addscore').ids.port.text
         playerName =  self.navigation_bar.get_screen('addscore').ids.nickname.text
         playerScore = self.navigation_bar.get_screen('ending').ids.finalScore.text
-        ws.send((playerName,playerScore))
+        try:
+            ws = create_connection("ws://" + str(playerIP) + ":" + str(playerPort) + "/")
+            ws.send(self.jsonScore(playerName,playerScore))
+            self.fillScores(ws)
+            self.manager.current = 'score'
+        except ValueError:
+            self.navigation_bar.get_screen('addscore').ids.IPerror.text = "Please Enter a valid IP"
+
+    def jsonScore(playerName, playerScore):
+        return json.dumps({
+            "command":"send_score",
+            "name":playerName,
+            "score":playerScore
+        })
+
+    def fillScores(self, ws):
+        ws.send("get_top_scores")
+        
+
 
     def processGuess(self):
         
