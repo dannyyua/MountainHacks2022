@@ -180,6 +180,7 @@ ScreenManager:
 
     MDTextField:
         id: altitude
+        write_tab: False
         hint_text: 'Altitude'
         helper_text: 'Height of the mountain'
         helper_text_mode: 'on_focus'
@@ -191,6 +192,7 @@ ScreenManager:
 
     MDTextField:
         id: prominence
+        write_tab: False
         hint_text: 'Prominence'
         helper_text: 'Relative height of peaks'
         helper_text_mode: 'on_focus'
@@ -202,6 +204,7 @@ ScreenManager:
 
     MDTextField:
         id: isolation
+        write_tab: False
         hint_text: 'Isolation'
         helper_text: 'Distance to nearest mountain'
         helper_text_mode: 'on_focus'
