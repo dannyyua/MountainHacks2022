@@ -1,5 +1,22 @@
 from typing import final
 
+# get scores array
+
+def gameScores(playerArr, guessArr, ansMountain):
+    for guess in guessArr:
+        playerID = guess.playerID
+        playerHeight = guess.altitude
+        playerProm = guess.prominence
+        playerIso = guess.isolation
+
+        #Need to define array of Players
+        playerArr[playerID].points += score(playerHeight,playerProm,playerIso,
+        ansMountain.altitude,ansMountain.prominence,ansMountain.isolation)
+
+    return(playerArr)
+
+
+
 def score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso):
     heightScore = guessHeight/actualHeight
     promScore = guessProm/actualProm
