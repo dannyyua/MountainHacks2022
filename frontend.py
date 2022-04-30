@@ -216,6 +216,16 @@ ScreenManager:
         text: 'SUBMIT'
         pos_hint: {'center_x' : 0.89, 'center_y': 0.25}
         on_press: app.processGuess()
+    
+    MDLabel:
+        id: valueError
+        text: ''
+        halign: 'center'
+        size_hint_x: 0.4
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.05}
+        font_size: 22
+        color: (1,0,0,1)
+
         
     
 <MultiScreen>:
@@ -296,35 +306,42 @@ class MountainApp(MDApp):
         
         playScreen = self.navigation_bar.get_screen('play')
         if (playScreen.rounds < playScreen.maxRounds):
-            guessHeight = int(playScreen.ids.altitude.text)
-            guessProm = int(playScreen.ids.prominence.text)
-            guessIso = int(playScreen.ids.isolation.text)
-            actualHeight = int(playScreen.mountain.altitude)
-            actualProm = int(playScreen.mountain.prominence)
-            actualIso = int(playScreen.mountain.isolation)
-            # Update values
-            playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
-            playScreen.rounds += 1
-            playScreen.maxScore += 30
-            playScreen.mountain = game_logic.RandomMountain()
-            # Update Screen tags
-            playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
-            playScreen.mountainName = str(playScreen.mountain.name)
-            playScreen.currentRound = "Round " + str(playScreen.rounds) + "/" + str(playScreen.maxRounds)
-            playScreen.currentScore = str(playScreen.score) + "/" + str(playScreen.maxScore)
+            try:
+                guessHeight = int(playScreen.ids.altitude.text)
+                guessProm = int(playScreen.ids.prominence.text)
+                guessIso = int(playScreen.ids.isolation.text)
+                
+                actualHeight = int(playScreen.mountain.altitude)
+                actualProm = int(playScreen.mountain.prominence)
+                actualIso = int(playScreen.mountain.isolation)
+                # Update values
+                playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
+                playScreen.rounds += 1
+                playScreen.maxScore += 30
+                playScreen.mountain = game_logic.RandomMountain()
+                # Update Screen tags
+                playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
+                playScreen.mountainName = str(playScreen.mountain.name)
+                playScreen.currentRound = "Round " + str(playScreen.rounds) + "/" + str(playScreen.maxRounds)
+                playScreen.currentScore = str(playScreen.score) + "/" + str(playScreen.maxScore)
+            except ValueError:
+                playScreen.ids.valueError.text = "Please Enter a valid number"
         else:
-            guessHeight = int(playScreen.ids.altitude.text)
-            guessProm = int(playScreen.ids.prominence.text)
-            guessIso = int(playScreen.ids.isolation.text)
-            actualHeight = int(playScreen.mountain.altitude)
-            actualProm = int(playScreen.mountain.prominence)
-            actualIso = int(playScreen.mountain.isolation)
-            playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
-            playScreen.rounds += 1
-            playScreen.maxScore += 30
-            playScreen.mountain = game_logic.RandomMountain()
-            self.set_screen('ending')
-            self.navigation_bar.get_screen('ending').ids.finalScore.text = "[b]"+str(playScreen.score) + "/" + str(playScreen.maxScore)+"[/b]"
+            try:   
+                guessHeight = int(playScreen.ids.altitude.text)
+                guessProm = int(playScreen.ids.prominence.text)
+                guessIso = int(playScreen.ids.isolation.text)
+                actualHeight = int(playScreen.mountain.altitude)
+                actualProm = int(playScreen.mountain.prominence)
+                actualIso = int(playScreen.mountain.isolation)
+                playScreen.score += int(score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso))
+                playScreen.rounds += 1
+                playScreen.maxScore += 30
+                playScreen.mountain = game_logic.RandomMountain()
+                self.set_screen('ending')
+                self.navigation_bar.get_screen('ending').ids.finalScore.text = "[b]"+str(playScreen.score) + "/" + str(playScreen.maxScore)+"[/b]"
+            except ValueError:
+                playScreen.ids.valueError.text = "Please Enter a valid number"
 
     def resetGame(self):
         playScreen = self.navigation_bar.get_screen('play')
