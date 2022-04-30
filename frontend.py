@@ -267,21 +267,24 @@ class MountainApp(MDApp):
             self.navigation_bar.get_screen('join').ids.IPerror.text = "Please Enter a valid IP"
 
     def processGuess(self):
-        self.navigation_bar.get_screen('play').rounds += 1
-        guessHeight = self.navigation_bar.get_screen('play').ids.altitude.text
-        guessProm = self.navigation_bar.get_screen('play').ids.prominence.text
-        guessIso = self.navigation_bar.get_screen('play').ids.isolation.text
-        actualHeight = self.navigation_bar.get_screen('play').mountain.altitude
-        actualProm = self.navigation_bar.get_screen('play').mountain.prominence
-        actualIso = self.navigation_bar.get_screen('play').mountain.isolation
-        self.navigation_bar.get_screen('play').score += score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
+        playScreen = self.navigation_bar.get_screen('play')
+        print(playScreen.mountain.altitude)
+        playScreen.rounds += 1
+        guessHeight = int(playScreen.ids.altitude.text)
+        guessProm = int(playScreen.ids.prominence.text)
+        guessIso = int(playScreen.ids.isolation.text)
+        actualHeight = int(playScreen.mountain.altitude)
+        actualProm = int(playScreen.mountain.prominence)
+        actualIso = int(playScreen.mountain.isolation)
+        
+        self.navigation_bar.get_screen('play').score += score.score(guessHeight, guessProm, guessIso, actualHeight, actualProm, actualIso)
 
-        mountain = game_logic.RandomMountain()
-        imageName = StringProperty("images/" + str(mountain.rank) + ".jpg")
+        playScreen.mountain = game_logic.RandomMountain()
+        playScreen.imageName = StringProperty("images/" + str(playScreen.mountain.rank) + ".jpg")
 
-        mountainName = StringProperty(str(mountain.name))
-        currentRound = StringProperty("Round " + str(self.navigation_bar.get_screen('play').rounds) + "/" + str(self.navigation_bar.get_screen('play').max_rounds))
-        currentScore = StringProperty(str(score) + "/" + str(self.navigation_bar.get_screen('play').max_score))
+        playScreen.mountainName = StringProperty(str(playScreen.mountain.name))
+        playScreen.currentRound = StringProperty("Round " + str(self.navigation_bar.get_screen('play').rounds) + "/" + str(self.navigation_bar.get_screen('play').max_rounds))
+        playScreen.currentScore = StringProperty(str(score) + "/" + str(self.navigation_bar.get_screen('play').max_score))
     
     def test(self):
         print("hi")
