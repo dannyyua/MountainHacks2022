@@ -4,7 +4,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from kivy.uix.widget import Widget
 from kivy.uix.image import Image
-from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatButton
+from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatButton, MDRectangleFlatButton
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDToolbar
@@ -18,7 +18,6 @@ async def hello():
     async with websockets.connect("ws://142.58.168.251:8765/") as websocket:
         await websocket.send("Player_name,")
         await websocket.recv()
-
 
 
 screen_helper = """
@@ -40,40 +39,39 @@ ScreenManager:
         text: 'PLAY'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
         on_press: root.manager.current = 'join'
-    
+
 <JoinScreen>:
     name: 'join'
     MDToolbar:
         title: 'Join'
         pos_hint: {'top': 1}
-        right_action_items: [['account-group', lambda x : self.activateFan()]]
-
-    MDRectangleFlatButton:
-        text: 'Back'
-        pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: root.manager.current = 'home'
 
     MDTextField:
-        text: 'Enter your nickname'
+        text: 'Enter Your Nickname'
         halign: 'center'
         size_hint: (0.8,1)
-        pos_hint:{'center_x' : 0.5, 'center_y': 0.7}
+        pos_hint:{'center_x' : 0.5, 'center_y': 0.3}
         font_size: 22
         
     MDTextField:
         text: 'Enter IP'
         halign: 'center'
         size_hint: (0.8,1)
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.2}
         font_size: 22
 
     MDTextField:
         text: 'Enter Port'
         halign: 'center'
         size_hint: (0.8,1)
-        pos_hint: {'center_x' : 0.5, 'center_y': 0.3}
+        pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
         font_size: 22
-        
+    
+    MDFillRoundFlatButton:
+        text: 'Back'
+        pos_hint: {'center_x' : 0.2,'center_y' : 0.2}
+        on_press: root.manager.current = 'home'
+
 <LoadScreen>:
     name: 'load'
     MDLabel:
