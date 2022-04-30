@@ -110,7 +110,7 @@ ScreenManager:
     MDRectangleFlatButton:
         text: 'RETURN'
         pos_hint: {'center_x' : 0.5, 'center_y': 0.1}
-        on_press: root.manager.current = 'home'
+        on_press: app.resetGame()
     MDLabel:
         markup: True
         text: '[u][b]'+"CONGRATULATIONS"+'[/b][/u]'
@@ -325,6 +325,21 @@ class MountainApp(MDApp):
             playScreen.mountain = game_logic.RandomMountain()
             self.set_screen('ending')
             self.navigation_bar.get_screen('ending').ids.finalScore.text = "[b]"+str(playScreen.score) + "/" + str(playScreen.maxScore)+"[/b]"
+
+    def resetGame(self):
+        playScreen = self.navigation_bar.get_screen('play')
+        playScreen.rounds = 1
+        playScreen.maxRounds = 5
+        playScreen.score = 0
+        playScreen.maxScore = 0
+
+        playScreen.mountain = game_logic.RandomMountain()
+        playScreen.imageName = "images/" + str(playScreen.mountain.rank) + ".jpg"
+        playScreen.mountainName = str(playScreen.mountain.name)
+        playScreen.currentRound = "Round " + str(playScreen.rounds) + "/" + str(playScreen.maxRounds)
+        playScreen.currentScore = str(playScreen.score) + "/" + str(playScreen.maxScore)
+
+        self.set_screen('home')
             
     def test(self):
         print("hi")
